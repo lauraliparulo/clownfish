@@ -1,18 +1,18 @@
-var game, gameOver;
-var counterElement = document.getElementById('counter');
-var scoreElement = document.getElementById('score');
+var game, joystick;
+var livesCounterElement = document.getElementById('lives');
+var scoreCounterElement = document.getElementById('score');
 var evilAudioElement = document.createElement('audio');
 var goodyAudioElement = document.createElement('audio');
 var clownfish, evil1, starfish, seahorse, shell;
-var joystick;
-var counter = 5;
-var score = 0;
+var livesCounter = 5;
+var scoreCounter = 0;
+//boolean variables to track collisions events
 var hitEvil1, hitStarfish;
 
 function init() {
 
-    counterElement.innerHTML = counter;
-    scoreElement.innerHTML = score;
+    livesCounterElement.innerHTML = livesCounter;
+    scoreCounterElement.innerHTML = "Score: " + scoreCounter;
 
     evilAudioElement.setAttribute('src', 'sounds/hitEvil.ogg');
     goodyAudioElement.setAttribute('src', 'sounds/hitGoody.ogg');
@@ -27,14 +27,13 @@ function init() {
             window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     );
 
-    clownfish = new Sprite(game, 'images/clownfish.png', 70, 50);
-    evil1 = new Sprite(game, 'images/evil1.png', 100, 60);
-    starfish = new Sprite(game, 'images/starfish.png', 80, 60);
-    seahorse = new Sprite(game, 'images/seahorse.png', 100, 60);
-    shell = new Sprite(game, 'images/shell.png', 100, 60);
+    clownfish = new Sprite(game, 'images/clownfish.png', 70, 50, null, null, null, null);
+    evil1 = new Sprite(game, 'images/evil1.png', 100, 60, -1, evilAudioElement, livesCounterElement, hitEvil1);
+    starfish = new Sprite(game, 'images/starfish.png', 80, 60, 2, goodyAudioElement, scoreCounterElement, hitStarfish);
+    /*    seahorse = new Sprite(game, 'images/seahorse.png', 100, 60);
+     shell = new Sprite(game, 'images/shell.png', 100, 60);*/
 
     evil1.setPosition(game.width, game.height / 2);
-
     starfish.setPosition(game.width, game.height / 4);
 
     if (game.touchable) {
@@ -81,9 +80,8 @@ function update() {
             clownfish.setDY(0);
         }
 
-        detectEvilCollision(evil1);
-
-        detectGoodyCollision(starfish);
+        detectCollision(evil1);
+        detectCollision(starfish);
 
         clownfish.update();
 
@@ -93,13 +91,14 @@ function update() {
 
         evil1.update();
         starfish.update();
+        scoreCounterElement.innerHTML = "Score: " + scoreCounter;
     } // end touchable
 
 }// end update
 
 function checkGameOver() {
 
-    if (counter === 0) {
+    if (livesCounter === 0) {
 
         clownfish = null;
         evil1 = null;
@@ -107,39 +106,34 @@ function checkGameOver() {
         document.body.style.background = 'url("images/gameoverK.png") no-repeat center center';
 
         evilAudioElement.setAttribute('src', 'sounds/end.ogg');
-
         evilAudioElement.play();
     }
 }
 
-function detectEvilCollision(object) {
+function detectCollision(object) {
 
-    if (!hitEvil1 && clownfish.x < object.x + object.width && clownfish.x + clownfish.width > object.x &&
+    if (!object.hit && clownfish.x < object.x + object.width && clownfish.x + clownfish.width > object.x &&
         clownfish.y < object.y + object.height && clownfish.y + clownfish.height > object.y) {
-        hitEvil1 = true;
-        evilAudioElement.play();
-        counter -= 1;
-        counterElement.innerHTML = counter;
+        object.hit = true;
+        object.audioElement.play();
+
+        if (object.counterIncrement > 0) {
+            scoreCounter = scoreCounter + object.counterIncrement;
+            object.counterElement.innerHTML = scoreCounter;
+
+        }
+        else {
+            livesCounter = livesCounter + object.counterIncrement;
+            object.counterElement.innerHTML = livesCounter;
+        }
+
+        console.log("evil: " + livesCounter);
+        console.log("good: " + scoreCounter);
+        console.log("increment" + object.counterIncrement);
     }
 
     if (clownfish.x > object.x + object.width) {
-        hitEvil1 = false;
-    }
-
-}
-
-function detectGoodyCollision(object) {
-
-    if (!hitStarfish && clownfish.x < object.x + object.width && clownfish.x + clownfish.width > object.x &&
-        clownfish.y < object.y + object.height && clownfish.y + clownfish.height > object.y) {
-        hitStarfish = true;
-        goodyAudioElement.play();
-        score += 1;
-        scoreElement.innerHTML = score;
-    }
-
-    if (clownfish.x > object.x + object.width) {
-        hitStarfish = false;
+        object.hit = false;
     }
 
 }

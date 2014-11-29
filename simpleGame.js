@@ -1,3 +1,6 @@
+//Based on simpleGame.js
+
+
 /* simpleGame.js
  a very basic game library for the canvas tag
  loosely based on Python gameEngine
@@ -15,7 +18,8 @@ var currentKey = null;
 var keysDown = new Array(256);
 var virtKeys = false;
 
-function Sprite(scene, imageFile, width, height) {
+
+function Sprite(scene, imageFile, width, height, counterIncrement, audioElement, counterElement, hit) {
     //core class for game engine
     this.canvas = scene.canvas;
     this.context = this.canvas.getContext("2d");
@@ -36,6 +40,10 @@ function Sprite(scene, imageFile, width, height) {
     this.camera = false;
     this.visible = true;
     this.boundAction = WRAP;
+    this.counterElement = counterElement;
+    this.audioElement = audioElement;
+    this.counterIncrement = counterIncrement;
+    this.hit = hit;
 
     this.changeImage = function (imgFile) {
         this.image.src = imgFile;

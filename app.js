@@ -53,13 +53,10 @@ function update() {
 
     if (starfish.x < 0.1) {
         starfish.setPosition(game.width, game.height * Math.random());
-        console.log('starfish set position');
-
     }
 
     if (evil1.x < 0.1) {
         evil1.setPosition(game.width, game.height * Math.random());
-        console.log('starfish set position');
     }
 
 
@@ -126,10 +123,6 @@ function detectCollision(object) {
             livesCounter = livesCounter + object.counterIncrement;
             object.counterElement.innerHTML = livesCounter;
         }
-
-        console.log("evil: " + livesCounter);
-        console.log("good: " + scoreCounter);
-        console.log("increment" + object.counterIncrement);
     }
 
     if (clownfish.x > object.x + object.width) {

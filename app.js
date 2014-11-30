@@ -2,7 +2,7 @@ var game, joystick;
 var scoreCounterElement = document.getElementById('score');
 var evilAudioElement = document.createElement('audio');
 var goodyAudioElement = document.createElement('audio');
-var clownfish, evil1, starfish, seahorse, shell;
+var clownfish, evil1, starfish;
 var livesCounter = 5;
 var scoreCounter = 0;
 //boolean variables to track collisions events
@@ -30,8 +30,6 @@ function init() {
     clownfish = new Sprite(game, 'images/clownfish.png', 70, 50, null, null, null, null);
     evil1 = new Sprite(game, 'images/evil1.png', 100, 60, -1, evilAudioElement, null, hitEvil1);
     starfish = new Sprite(game, 'images/starfish.png', 80, 60, 2, goodyAudioElement, scoreCounterElement, hitStarfish);
-    /*    seahorse = new Sprite(game, 'images/seahorse.png', 100, 60);
-     shell = new Sprite(game, 'images/shell.png', 100, 60);*/
 
     evil1.setPosition(game.width, game.height / 2);
     starfish.setPosition(game.width, game.height / 4);
@@ -44,11 +42,13 @@ function init() {
 
     clownfish.setSpeed(0);
     clownfish.setPosition(40, 30);
+
     game.start();
 
 } // end init
 
 function update() {
+
     game.clear();
 
     if (starfish.x < 0.1) {
@@ -58,7 +58,6 @@ function update() {
     if (evil1.x < 0.1) {
         evil1.setPosition(game.width, game.height * Math.random());
     }
-
 
     if (game.touchable) {
 
@@ -80,15 +79,15 @@ function update() {
         detectCollision(evil1);
         detectCollision(starfish);
 
-        clownfish.update();
-
         evil1.setDX(-8);
         starfish.setDX(-10);
+
         checkGameOver();
 
         evil1.update();
         starfish.update();
-        scoreCounterElement.innerHTML = "Score: " + scoreCounter;
+        clownfish.update();
+
     } // end touchable
 
 }// end update

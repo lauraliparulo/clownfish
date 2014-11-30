@@ -1,5 +1,4 @@
 var game, joystick;
-var livesCounterElement = document.getElementById('lives');
 var scoreCounterElement = document.getElementById('score');
 var evilAudioElement = document.createElement('audio');
 var goodyAudioElement = document.createElement('audio');
@@ -11,7 +10,8 @@ var hitEvil1, hitStarfish;
 
 function init() {
 
-    livesCounterElement.innerHTML = livesCounter;
+    addLives();
+
     scoreCounterElement.innerHTML = "Score: " + scoreCounter;
 
     evilAudioElement.setAttribute('src', 'sounds/hitEvil.ogg');
@@ -28,7 +28,7 @@ function init() {
     );
 
     clownfish = new Sprite(game, 'images/clownfish.png', 70, 50, null, null, null, null);
-    evil1 = new Sprite(game, 'images/evil1.png', 100, 60, -1, evilAudioElement, livesCounterElement, hitEvil1);
+    evil1 = new Sprite(game, 'images/evil1.png', 100, 60, -1, evilAudioElement, null, hitEvil1);
     starfish = new Sprite(game, 'images/starfish.png', 80, 60, 2, goodyAudioElement, scoreCounterElement, hitStarfish);
     /*    seahorse = new Sprite(game, 'images/seahorse.png', 100, 60);
      shell = new Sprite(game, 'images/shell.png', 100, 60);*/
@@ -121,7 +121,10 @@ function detectCollision(object) {
         }
         else {
             livesCounter = livesCounter + object.counterIncrement;
-            object.counterElement.innerHTML = livesCounter;
+            //      object.counterElement.innerHTML = livesCounter;
+            var x = document.getElementById("life" + livesCounter);
+            x.parentNode.removeChild(x)
+
         }
     }
 
@@ -136,7 +139,20 @@ function resize() {
             window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
             window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     );
+
 }
+function addLives() {
+    for (var i = 0; i < livesCounter; i++) {
+        var x = document.createElement("IMG");
+        x.setAttribute("src", "images/anchor2.png");
+        x.setAttribute("width", "22");
+        x.setAttribute("height", "25");
+        x.setAttribute("id", "life" + i);
+        document.body.appendChild(x);
+        document.body.appendChild(document.createTextNode(' '));
+    }
+}
+
 window.addEventListener('load', init);
 window.addEventListener('load', resize);
 

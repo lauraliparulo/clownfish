@@ -6,10 +6,9 @@ var livesCounter = 5;
 var scoreCounter = 0;
 //boolean variables to track collisions events
 var hitEvil1, hitStarfish;
+var lives = [];
 
 function init() {
-
-    addLives();
 
     scoreCounterElement.innerHTML = "Score: " + scoreCounter;
 
@@ -33,6 +32,8 @@ function init() {
     evil1.setPosition(game.width, game.height / 2);
 
     starfish.setPosition(game.width, game.height / 4);
+
+    addLives();
 
     if (game.touchable) {
         joystick = new Joy();
@@ -76,18 +77,21 @@ function update() {
             clownfish.setDY(0);
         }
 
-
         detectCollision(evil1);
         detectCollision(starfish);
 
         evil1.setDX(-8);
         starfish.setDX(-10);
 
-        checkGameOver();
-
         evil1.update();
         starfish.update();
         clownfish.update();
+        //update lives
+        for (var i = 0; i < livesCounter; i++) {
+            lives[i].update();
+        }
+
+        checkGameOver();
 
     } // end touchable
 
@@ -120,8 +124,7 @@ function detectCollision(object) {
         else {
             livesCounter = livesCounter + object.counterIncrement;
             //      object.counterElement.innerHTML = livesCounter;
-            var x = document.getElementById("life" + livesCounter);
-            x.parentNode.removeChild(x);
+            lives.pop();
 
         }
     } else if (!clownfish.collidesWith(object)) {
@@ -135,17 +138,15 @@ function resize() {
             window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
             window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     );
-
 }
+
 function addLives() {
+    var anchor;
     for (var i = 0; i < livesCounter; i++) {
-        var x = document.createElement("IMG");
-        x.setAttribute("src", "images/anchor2.png");
-        x.setAttribute("width", "22");
-        x.setAttribute("height", "25");
-        x.setAttribute("id", "life" + i);
-        document.body.appendChild(x);
-        document.body.appendChild(document.createTextNode(' '));
+        anchor = new Sprite(game, 'images/anchor2.png', 18, 20, null, null, null, null);
+        anchor.setPosition(10 + i * 20, 10);
+        anchor.setSpeed(0);
+        lives.push(anchor);
     }
 }
 

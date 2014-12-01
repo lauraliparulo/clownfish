@@ -108,11 +108,9 @@ function checkGameOver() {
 
 function detectCollision(object) {
 
-    if (!object.hit && clownfish.x < object.x + object.width && clownfish.x + clownfish.width > object.x &&
-        clownfish.y < object.y + object.height && clownfish.y + clownfish.height > object.y) {
-        object.hit = true;
+    if (!object.hit && clownfish.collidesWith(object)) {
         object.audioElement.play();
-
+        object.hit = true;
         if (object.counterIncrement > 0) {
             scoreCounter = scoreCounter + object.counterIncrement;
             object.counterElement.innerHTML = scoreCounter;
@@ -122,17 +120,14 @@ function detectCollision(object) {
             livesCounter = livesCounter + object.counterIncrement;
             //      object.counterElement.innerHTML = livesCounter;
             var x = document.getElementById("life" + livesCounter);
-            x.parentNode.removeChild(x)
+            x.parentNode.removeChild(x);
 
         }
-    }
-
-    if (clownfish.x > object.x + object.width) {
+    } else if (!clownfish.collidesWith(object)) {
         object.hit = false;
     }
 
 }
-
 
 function resize() {
     game.setSize(

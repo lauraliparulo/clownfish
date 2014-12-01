@@ -1,7 +1,6 @@
 var game, joystick;
 var scoreCounterElement = document.getElementById('score');
-var evilAudioElement = document.createElement('audio');
-var goodyAudioElement = document.createElement('audio');
+var evilSound, goodieSound, gameOverSound, introSound;
 var clownfish, evil1, starfish;
 var livesCounter = 5;
 var scoreCounter = 0;
@@ -14,8 +13,8 @@ function init() {
 
     scoreCounterElement.innerHTML = "Score: " + scoreCounter;
 
-    evilAudioElement.setAttribute('src', 'sounds/hitEvil.ogg');
-    goodyAudioElement.setAttribute('src', 'sounds/hitGoody.ogg');
+    evilSound = new Sound('sounds/hitEvil.ogg');
+    goodieSound = new Sound('sounds/hitGoody.ogg');
 
     game = new Scene();
 
@@ -28,8 +27,8 @@ function init() {
     );
 
     clownfish = new Sprite(game, 'images/clownfish.png', 70, 50, null, null, null, null);
-    evil1 = new Sprite(game, 'images/evil1.png', 100, 60, -1, evilAudioElement, null, hitEvil1);
-    starfish = new Sprite(game, 'images/starfish.png', 80, 60, 2, goodyAudioElement, scoreCounterElement, hitStarfish);
+    evil1 = new Sprite(game, 'images/evil1.png', 100, 60, -1, evilSound, null, hitEvil1);
+    starfish = new Sprite(game, 'images/starfish.png', 80, 60, 2, goodieSound, scoreCounterElement, hitStarfish);
 
     evil1.setPosition(game.width, game.height / 2);
     starfish.setPosition(game.width, game.height / 4);
@@ -76,6 +75,7 @@ function update() {
             clownfish.setDY(0);
         }
 
+
         detectCollision(evil1);
         detectCollision(starfish);
 
@@ -101,8 +101,8 @@ function checkGameOver() {
         starfish = null;
         document.body.style.background = 'url("images/gameoverK.png") no-repeat center center';
 
-        evilAudioElement.setAttribute('src', 'sounds/end.ogg');
-        evilAudioElement.play();
+        evilSound.setAttribute('src', 'sounds/end.ogg');
+        evilSound.play();
     }
 }
 
@@ -116,7 +116,7 @@ function detectCollision(object) {
         if (object.counterIncrement > 0) {
             scoreCounter = scoreCounter + object.counterIncrement;
             object.counterElement.innerHTML = scoreCounter;
-
+            object.setPosition(game.width, game.height * Math.random());
         }
         else {
             livesCounter = livesCounter + object.counterIncrement;
@@ -132,6 +132,7 @@ function detectCollision(object) {
     }
 
 }
+
 
 function resize() {
     game.setSize(

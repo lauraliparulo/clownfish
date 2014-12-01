@@ -31,6 +31,7 @@ function init() {
     starfish = new Sprite(game, 'images/starfish.png', 80, 60, 2, goodieSound, scoreCounterElement, hitStarfish);
 
     evil1.setPosition(game.width, game.height / 2);
+
     starfish.setPosition(game.width, game.height / 4);
 
     if (game.touchable) {
@@ -113,7 +114,7 @@ function detectCollision(object) {
         object.hit = true;
         if (object.counterIncrement > 0) {
             scoreCounter = scoreCounter + object.counterIncrement;
-            object.counterElement.innerHTML = scoreCounter;
+            scoreCounterElement.innerHTML = "Score: " + scoreCounter;
             object.setPosition(game.width, game.height * Math.random());
         }
         else {

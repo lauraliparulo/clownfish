@@ -1,7 +1,7 @@
 #clownfish
 =========
 
-##Version: 0.1.0
+##Version: 0.1.1
 
 A simple Html5 game for FirefoxOS. Based on the javascript game engine "simpleGame.js". Developed with copyleft cliparts and sounds.
 

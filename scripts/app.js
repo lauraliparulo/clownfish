@@ -14,6 +14,7 @@ function init() {
 
     evilSound = new Sound('sounds/hitEvil.ogg');
     goodieSound = new Sound('sounds/hitGoody.ogg');
+    gameOverSound = new Sound('sounds/gameOver.ogg');
 
     game = new Scene();
 
@@ -82,6 +83,7 @@ function update() {
 
         evil1.setDX(-8);
         starfish.setDX(-10);
+        checkGameOver();
 
         evil1.update();
         starfish.update();
@@ -91,7 +93,6 @@ function update() {
             lives[i].update();
         }
 
-        checkGameOver();
 
     } // end touchable
 
@@ -101,13 +102,16 @@ function checkGameOver() {
 
     if (livesCounter === 0) {
 
-        clownfish = null;
-        evil1 = null;
-        starfish = null;
         document.body.style.background = 'url("images/gameoverK.png") no-repeat center center';
 
-        evilSound.setAttribute('src', 'sounds/end.ogg');
-        evilSound.play();
+        clownfish.hide();
+        evil1.hide();
+        starfish.hide();
+
+        gameOverSound = new Sound('sounds/gameOver.ogg');
+        gameOverSound.play();
+
+        game.stop();
     }
 }
 

@@ -876,6 +876,9 @@ function GameButton(label) {
         this.clicked = false;
     } // end onmouseup
 
+    this.setName = function (name) {
+        this.button.innerHTML = name;
+    }
     this.isClicked = function () {
         return this.button.clicked;
     } // end isClicked

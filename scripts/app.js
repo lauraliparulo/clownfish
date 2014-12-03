@@ -7,6 +7,8 @@ var scoreCounter = 0;
 //boolean variables to track collisions events
 var hitEvil1, hitStarfish;
 var lives = [];
+var button;
+var pause = true;
 
 function init() {
 
@@ -40,7 +42,13 @@ function init() {
         joystick = new Joy();
     } else {
         alert('This game requires a touch screen');
-    } // end if
+    } // end ifs
+
+    button = new GameButton("Start");
+
+    button.setPos((game.width / 2 - 30), game.height - 33);
+    button.setSize(60, 30);
+
 
     clownfish.setSpeed(0);
     clownfish.setPosition(40, 30);
@@ -80,9 +88,14 @@ function update() {
 
         detectCollision(evil1);
         detectCollision(starfish);
-
         evil1.setDX(-8);
         starfish.setDX(-10);
+
+        if (pause) {
+            evil1.setDX(0);
+            starfish.setDX(0);
+        }
+
         checkGameOver();
 
         evil1.update();
@@ -93,10 +106,26 @@ function update() {
             lives[i].update();
         }
 
+        checkButtons();
 
     } // end touchable
 
 }// end update
+
+function checkButtons() {
+
+    if (button.isClicked()) {
+        if (pause) {
+            button.setName('Pause');
+            pause = false;
+        } else {
+            button.setName('Resume');
+            pause = true;
+
+        }
+    }
+
+}// end checkbutton
 
 function checkGameOver() {
 

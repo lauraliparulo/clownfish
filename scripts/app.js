@@ -17,6 +17,7 @@ function init() {
     evilSound = new Sound('sounds/hitEvil.ogg');
     goodieSound = new Sound('sounds/hitGoody.ogg');
     gameOverSound = new Sound('sounds/gameOver.ogg');
+    introSound = new Sound('sounds/intro.ogg');
 
     game = new Scene();
 
@@ -49,11 +50,14 @@ function init() {
     button.setPos((game.width / 2 - 30), game.height - 33);
     button.setSize(60, 30);
 
+    evil1.hide();
+    starfish.hide();
 
     clownfish.setSpeed(0);
     clownfish.setPosition(40, 30);
 
     game.start();
+    introSound.play();
 
 } // end init
 
@@ -116,6 +120,8 @@ function checkButtons() {
 
     if (button.isClicked()) {
         if (pause) {
+            evil1.show();
+            starfish.show();
             button.setName('Pause');
             pause = false;
         } else {
@@ -141,6 +147,8 @@ function checkGameOver() {
         gameOverSound.play();
 
         game.stop();
+        document.body.removeChild(button.button);
+
     }
 }
 

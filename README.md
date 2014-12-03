@@ -17,4 +17,4 @@ https://www.freesound.org/
 Released under [GNU General Public License (GPL)](http://www.gnu.de/documents/gpl.en.html).
 
 ##Credits
-Thanks to [André Fiedler](https://twitter.com/sonnenkiste) for the introduction to FirefoxOS and javascript game development.
+Thanks to André Fiedler for the introduction to FirefoxOS and javascript game development.

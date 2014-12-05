@@ -2,7 +2,7 @@
 
 
 /* simpleGame.js
- a very basic game library for the canvas tag
+ a very basic scene library for the canvas tag
  loosely based on Python gameEngine
  and Scratch
  expects an HTML5-compliant browser
@@ -19,8 +19,8 @@ var keysDown = new Array(256);
 var virtKeys = false;
 
 
-function Sprite(scene, imageFile, width, height, counterIncrement, audioElement, counterElement, hit) {
-    //core class for game engine
+function Sprite(scene, imageFile, width, height) {
+    //core class for scene engine
     this.canvas = scene.canvas;
     this.context = this.canvas.getContext("2d");
     this.image = new Image();
@@ -40,10 +40,6 @@ function Sprite(scene, imageFile, width, height, counterIncrement, audioElement,
     this.camera = false;
     this.visible = true;
     this.boundAction = WRAP;
-    this.counterElement = counterElement;
-    this.audioElement = audioElement;
-    this.counterIncrement = counterIncrement;
-    this.hit = hit;
 
     this.changeImage = function (imgFile) {
         this.image.src = imgFile;

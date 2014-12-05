@@ -43,7 +43,7 @@ function MainSprite(scene, imageFile, width, height) {
 
 
 function OtherSprite(scene, imageFile, width, height, counterIncrement, audioElement, hit) {
-    entity = new Sprite(scene, imageFile, width, height, null, null, null);
+    entity = new Sprite(scene, imageFile, width, height);
 
     entity.counterIncrement = counterIncrement;
     entity.audioElement = audioElement;

@@ -132,29 +132,33 @@ function update() {
             clownfish.setDY(0);
         }
 
-        detectCollision(evil1);
-        detectCollision(starfish);
-        evil1.setDX(-8);
-        starfish.setDX(-10);
 
-        if (pause) {
-            evil1.setDX(0);
-            starfish.setDX(0);
-        }
+    } else {
+        x = scene.getMouseX();
+        y = scene.getMouseY();
+        clownfish.setPosition(x, y);
+    } // end if)// end touchable
 
-        checkGameOver();
+    checkButtons();
+    detectCollision(evil1);
+    detectCollision(starfish);
+    evil1.setDX(-8);
+    starfish.setDX(-10);
 
-        evil1.update();
-        starfish.update();
-        clownfish.update();
-        //update lives
-        for (var i = 0; i < livesCounter; i++) {
-            lives[i].update();
-        }
+    if (pause) {
+        evil1.setDX(0);
+        starfish.setDX(0);
+    }
 
-        checkButtons();
+    checkGameOver();
 
-    } // end touchable
+    evil1.update();
+    starfish.update();
+    clownfish.update();
+    //update lives
+    for (var i = 0; i < livesCounter; i++) {
+        lives[i].update();
+    }
 
 }// end update
 

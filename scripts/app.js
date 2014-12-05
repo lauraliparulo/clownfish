@@ -11,37 +11,6 @@ var button;
 var pause = true;
 
 
-function MainSprite(scene, imageFile, width, height) {
-    entity = new Sprite(scene, imageFile, width, height, null, null, null);
-    entity.maxSpeed = 10;
-    entity.minSpeed = -3;
-    entity.setSpeed(0);
-    /*    entity.setAngle(0);*/
-    entity.checkKeys = function () {
-        if (keysDown[K_LEFT]) {
-            this.changeAngleBy(-5);
-        } // end if
-        if (keysDown[K_RIGHT]) {
-            this.changeAngleBy(5);
-        } // end if
-        if (keysDown[K_UP]) {
-            this.changeSpeedBy(1);
-            if (this.speed > this.maxSpeed) {
-                this.setSpeed(this.maxSpeed);
-            } // end if
-        } // end if
-        if (keysDown[K_DOWN]) {
-            this.changeSpeedBy(-1);
-            if (this.speed < this.minSpeed) {
-                this.setSpeed(this.minSpeed);
-            } // end if
-        } // end if
-    } // end checkKeys
-
-    return entity;
-} // end setupFrog
-
-
 function OtherSprite(scene, imageFile, width, height, counterIncrement, audioElement, hit) {
     entity = new Sprite(scene, imageFile, width, height);
 
@@ -71,7 +40,7 @@ function init() {
             window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
     );
 
-    clownfish = new MainSprite(scene, 'images/clownfish.png', 70, 50);
+    clownfish = new Sprite(scene, 'images/clownfish.png', 70, 50);
     evil1 = new OtherSprite(scene, 'images/evil1.png', 100, 60, -1, evilSound, hitEvil1);
     starfish = new OtherSprite(scene, 'images/starfish.png', 80, 60, 2, goodieSound, hitStarfish);
 

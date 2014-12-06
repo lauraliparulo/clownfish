@@ -1,5 +1,5 @@
 var scene, joystick;
-var scoreCounterElement = document.getElementById('score');
+var scoreBoards;
 var evilSound, goodieSound, gameOverSound, introSound;
 var clownfish, evil1, starfish;
 var livesCounter = 5;
@@ -7,23 +7,21 @@ var scoreCounter = 0;
 //boolean variables to track collisions events
 var hitEvil1, hitStarfish;
 var lives = [];
-var button;
-var pause = true;
+var restartButton;
+
 
 
 function OtherSprite(scene, imageFile, width, height, counterIncrement, audioElement, hit) {
     entity = new Sprite(scene, imageFile, width, height);
-
     entity.counterIncrement = counterIncrement;
     entity.audioElement = audioElement;
     entity.hit = hit;
-
     return entity;
 }
 
 function init() {
 
-    scoreCounterElement.innerHTML = "Score: " + scoreCounter;
+    scoreBoard = "Score: " + scoreCounter;
 
     evilSound = new Sound('sounds/hitEvil.ogg');
     goodieSound = new Sound('sounds/hitGoody.ogg');
@@ -56,13 +54,14 @@ function init() {
         alert('This scene requires a touch screen');
     } // end ifs
 
-    button = new GameButton("Start");
+    restartButton = new GameButton("Restart");
 
-    button.setPos((scene.width / 2 - 30), scene.height - 33);
-    button.setSize(60, 30);
+    restartButton.setPos(scene.width - 70, scene.height - 40);
+    restartButton.setSize(60, 30);
 
-    evil1.hide();
-    starfish.hide();
+
+    evil1.show();
+    starfish.show();
 
     clownfish.setSpeed(0);
     clownfish.setPosition(40, 30);
@@ -70,7 +69,9 @@ function init() {
     scene.start();
     introSound.play();
 
+    showScore(scoreBoard);
 } // end init
+
 
 function update() {
 
@@ -85,41 +86,18 @@ function update() {
     }
 
     if (scene.touchable) {
-
-        var dx = joystick.getDiffX() * 0.1;
-        var dy = joystick.getDiffY() * 0.1;
-
-        if (clownfish.x + dx <= scene.width && clownfish.x + dx > 0) {
-            clownfish.setDX(dx);
-        } else {
-            clownfish.setDX(0);
-        }
-
-        if (clownfish.y + dy <= scene.height && clownfish.y + dy > 0) {
-            clownfish.setDY(dy);
-        } else {
-            clownfish.setDY(0);
-        }
-
-
+        checkJoystick();
     } else {
-        x = scene.getMouseX();
-        y = scene.getMouseY();
-        clownfish.setPosition(x, y);
+        checkMouse();
     } // end if)// end touchable
 
     checkButtons();
+    checkGameOver();
+
     detectCollision(evil1);
     detectCollision(starfish);
     evil1.setDX(-8);
     starfish.setDX(-10);
-
-    if (pause) {
-        evil1.setDX(0);
-        starfish.setDX(0);
-    }
-
-    checkGameOver();
 
     evil1.update();
     starfish.update();
@@ -129,23 +107,45 @@ function update() {
         lives[i].update();
     }
 
+    showScore(scoreBoard);
+
 }// end update
+
+function checkJoystick() {
+    var dx = joystick.getDiffX() * 0.1;
+    var dy = joystick.getDiffY() * 0.1;
+
+    if (clownfish.x + dx <= scene.width && clownfish.x + dx > 0) {
+        clownfish.setDX(dx);
+    } else {
+        clownfish.setDX(0);
+    }
+
+    if (clownfish.y + dy <= scene.height && clownfish.y + dy > 0) {
+        clownfish.setDY(dy);
+    } else {
+        clownfish.setDY(0);
+    }
+}
+
+function checkMouse() {
+    x = scene.getMouseX();
+    y = scene.getMouseY();
+    if (x < scene.width && y < scene.height) {
+        clownfish.show();
+        clownfish.setPosition(x, y);
+    } else {
+        clownfish.hide();
+    }
+}
 
 function checkButtons() {
 
-    if (button.isClicked()) {
-        if (pause) {
-            evil1.show();
-            starfish.show();
-            button.setName('Pause');
-            pause = false;
-        } else {
-            button.setName('Resume');
-            pause = true;
-
-        }
+    if (restartButton.isClicked()) {
+        restart();
+        evil1.show();
+        starfish.show();
     }
-
 }// end checkbutton
 
 function checkGameOver() {
@@ -174,7 +174,7 @@ function detectCollision(object) {
         object.hit = true;
         if (object.counterIncrement > 0) {
             scoreCounter = scoreCounter + object.counterIncrement;
-            scoreCounterElement.innerHTML = "Score: " + scoreCounter;
+            scoreBoard = "Score: " + scoreCounter;
             object.setPosition(scene.width, scene.height * Math.random());
         }
         else {
@@ -199,14 +199,23 @@ function resize() {
 function addLives() {
     var anchor;
     for (var i = 0; i < livesCounter; i++) {
-        anchor = new Sprite(scene, 'images/anchor2.png', 18, 20, null, null, null, null);
-        anchor.setPosition(10 + i * 20, 10);
+        anchor = new Sprite(scene, 'images/anchor2.png', 18, 20);
+        anchor.setPosition(40 + i * 21, scene.height - 40);
         anchor.setSpeed(0);
         lives.push(anchor);
     }
 }
 
+
+function restart() {
+    document.location.href = "";
+} // end restart
+
 window.addEventListener('load', init);
 window.addEventListener('load', resize);
 
 
+function showScore(score) {
+    scene.context.font = "20px Arial";
+    scene.context.fillText(score, 30, 40);
+}

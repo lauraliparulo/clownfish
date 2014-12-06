@@ -1,14 +1,8 @@
-var scene, joystick;
-var scoreBoards;
-var evilSound, goodieSound, gameOverSound, introSound;
-var clownfish, evil1, starfish;
 var livesCounter = 5;
 var scoreCounter = 0;
 //boolean variables to track collisions events
 var hitEvil1, hitStarfish;
 var lives = [];
-var restartButton;
-
 
 
 function OtherSprite(scene, imageFile, width, height, counterIncrement, audioElement, hit) {

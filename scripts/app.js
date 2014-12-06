@@ -1,7 +1,7 @@
 var livesCounter = 5;
 var scoreCounter = 0;
 //boolean variables to track collisions events
-var hitEvil1, hitStarfish;
+var hitEvil1, hitEvil2, hitEvil3, hitEvil4, hitEvil5, hitStarfish, hitSeahorse;
 var lives = [];
 
 
@@ -34,11 +34,33 @@ function init() {
 
     clownfish = new Sprite(scene, 'images/clownfish.png', 70, 50);
     evil1 = new OtherSprite(scene, 'images/evil1.png', 100, 60, -1, evilSound, hitEvil1);
+    evil2 = new OtherSprite(scene, 'images/evil5.png', 100, 60, -1, evilSound, hitEvil2);
+    evil3 = new OtherSprite(scene, 'images/evil8.png', 60, 30, -2, evilSound, hitEvil3);
+    evil4 = new OtherSprite(scene, 'images/evil6.png', 160, 100, -1, evilSound, hitEvil4);
+    jellyfish = new OtherSprite(scene, 'images/evil7.png', 60, 30, -2, evilSound, hitEvil5);
+
+    //neutral
+    tropical = new OtherSprite(scene, 'images/tropical.png', 60, 30);
+    tortoise = new OtherSprite(scene, 'images/tortoise.png', 60, 30);
+
     starfish = new OtherSprite(scene, 'images/starfish.png', 80, 60, 2, goodieSound, hitStarfish);
+    seahorse = new OtherSprite(scene, 'images/seahorse.png', 40, 80, 4, goodieSound, hitSeahorse);
+    shell = new OtherSprite(scene, 'images/shell.png', 40, 80, 4, goodieSound, hitSeahorse);
+    seaweed = new OtherSprite(scene, 'images/seaweed.png', 40, 80, 4, goodieSound, hitSeahorse);
 
     evil1.setPosition(scene.width, scene.height / 2);
+    evil2.setPosition(scene.width, scene.height / 3);
+    evil3.setPosition(scene.width, scene.height / 5);
+    evil4.setPosition(scene.width, scene.height / 7);
+    jellyfish.setPosition(scene.width, scene.height / 5);
+
+    tropical.setPosition(scene.width, scene.height / 5);
+    tortoise.setPosition(scene.width, scene.height / 5);
 
     starfish.setPosition(scene.width, scene.height / 4);
+    seahorse.setPosition(scene.width, scene.height / 6);
+    seaweed.setPosition(scene.width, scene.height / 8);
+    shell.setPosition(scene.width, scene.height / 9);
 
     addLives();
 
@@ -52,10 +74,6 @@ function init() {
 
     restartButton.setPos(scene.width - 70, scene.height - 40);
     restartButton.setSize(60, 30);
-
-
-    evil1.show();
-    starfish.show();
 
     clownfish.setSpeed(0);
     clownfish.setPosition(40, 30);
@@ -75,8 +93,44 @@ function update() {
         starfish.setPosition(scene.width, scene.height * Math.random());
     }
 
+    if (seahorse.x < 0.1) {
+        seahorse.setPosition(scene.width, scene.height * Math.random());
+    }
+
     if (evil1.x < 0.1) {
         evil1.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (evil2.x < 0.1) {
+        evil2.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (evil3.x < 0.1) {
+        evil3.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (evil4.x < 0.1) {
+        evil4.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (jellyfish.x < 0.1) {
+        jellyfish.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (tortoise.x < 0.1) {
+        tortoise.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (tropical.x < 0.1) {
+        tropical.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (shell.x < 0.1) {
+        shell.setPosition(scene.width, scene.height * Math.random());
+    }
+
+    if (seaweed.x < 0.1) {
+        seaweed.setPosition(scene.width, scene.height * Math.random());
     }
 
     if (scene.touchable) {
@@ -89,13 +143,46 @@ function update() {
     checkGameOver();
 
     detectCollision(evil1);
+    detectCollision(evil2);
+    detectCollision(evil3);
+    detectCollision(evil4);
+    detectCollision(jellyfish);
+
     detectCollision(starfish);
+    detectCollision(seahorse);
+    detectCollision(shell);
+    detectCollision(seaweed);
+
     evil1.setDX(-8);
+    evil2.setDX(-9);
+    evil3.setDX(-10);
+    evil4.setDX(-11);
+    jellyfish.setDX(-13);
+
     starfish.setDX(-10);
+    seahorse.setDX(-12);
+    shell.setDX(-14);
+    seaweed.setDX(-5);
+
+    tortoise.setDX(-12);
+    tropical.setDX(-12);
 
     evil1.update();
+    evil2.update();
+    evil3.update();
+    evil4.update();
+    jellyfish.update();
+
     starfish.update();
+    seahorse.update();
+    shell.update();
+    seaweed.update();
+
+    tortoise.update();
+    tropical.update();
+
     clownfish.update();
+
     //update lives
     for (var i = 0; i < livesCounter; i++) {
         lives[i].update();
@@ -137,8 +224,6 @@ function checkButtons() {
 
     if (restartButton.isClicked()) {
         restart();
-        evil1.show();
-        starfish.show();
     }
 }// end checkbutton
 
@@ -150,7 +235,19 @@ function checkGameOver() {
 
         clownfish.hide();
         evil1.hide();
+        evil2.hide();
+        evil3.hide();
+        evil3.hide();
+        evil4.hide();
+        jellyfish.hide();
+
+        seaweed.hide();
+        shell.hide();
+
+        tropical.hide();
+        tortoise.hide();
         starfish.hide();
+        seahorse.hide();
 
         gameOverSound = new Sound('sounds/gameOver.ogg');
         gameOverSound.play();
